@@ -13,7 +13,8 @@ INSTALL_PACKAGES=(
     # gnupg
     # lsb-release
     docker-compose
+    jq
 )
 
-export dir_DONE="config"
+export dir_DONE="__config__"
 export path_DONE_installed="$dir_DONE/DONE_installed"

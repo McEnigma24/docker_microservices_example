@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  # Backend service
+  backend:
+    build: ./backend
+    deploy:
+      replicas: 3  # Możesz zwiększyć liczbę replik backendu
+    environment:
+      - SERVICE_NAME=backend
+    networks:
+      - app-network
+
+  # Frontend service
+  frontend:
+    build: ./frontend
+    deploy:
+      replicas: 5  # Możesz dostosować liczbę frontendów
+    ports:
+      - "3001-3005:3001"  # Mapowanie portów dla wielu instancji
+    depends_on:
+      - backend
+      - nginx
+    environment:
+      - SERVICE_NAME=frontend
+      - BACKEND_URL=http://nginx:80
+    networks:
+      - app-network
+
+  # Load balancer dla backend
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

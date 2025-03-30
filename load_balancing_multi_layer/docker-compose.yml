@@ -1,0 +1,56 @@
+version: '3.8'
+services:
+  # Backend service
+  backend:
+    build: ./backend
+    deploy:
+      replicas: 3  # Wiele instancji backendu
+    environment:
+      - SERVICE_NAME=backend
+    networks:
+      - backend-network
+    # Bez publicznego mapowania portów - backend dostępny tylko w sieci wewnętrznej
+
+  # Frontend service
+  frontend:
+    build: ./frontend
+    deploy:
+      replicas: 5  # Wiele instancji frontendu
+    environment:
+      - SERVICE_NAME=frontend
+      - BACKEND_URL=http://backend-lb:80
+    depends_on:
+      - backend
+      - backend-lb
+    networks:
+      - frontend-network
+      - backend-network
+    # Bez publicznego mapowania portów - frontend dostępny tylko w sieci wewnętrznej
+
+  # Load balancer dla backend (backend)
+  backend-lb:
+    image: nginx:latest
+    volumes:
+      - ./nginx/backend.conf:/etc/nginx/nginx.conf:ro
+    networks:
+      - backend-network
+    depends_on:
+      - backend
+
+  # Load balancer dla frontend (frontend) - punkt wejścia do systemu
+  frontend-lb:
+    image: nginx:latest
+    volumes:
+      - ./nginx/frontend.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8080:80"  # Jedyny publicznie dostępny port
+    networks:
+      - frontend-network
+    depends_on:
+      - frontend
+
+networks:
+  frontend-network:
+    driver: bridge
+  backend-network:
+    driver: bridge

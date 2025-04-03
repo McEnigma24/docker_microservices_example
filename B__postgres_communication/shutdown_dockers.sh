@@ -4,7 +4,7 @@
 
 clear
 
-# sudo docker-compose -d
-sudo docker-compose down
 
-# sudo docker-compose down -v # usuwa razem z volumenem
+# sudo docker-compose down
+
+sudo docker-compose down -v # usuwa razem z volumenem

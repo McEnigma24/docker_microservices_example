@@ -23,6 +23,23 @@ app.get('/records', async (req, res) => {
   }
 });
 
+app.get('/add_one', async (req, res) => {
+    try {
+      const result = await pool.query('INSERT INTO example_tab DEFAULT VALUES');
+
+      if (result.rowCount > 0) {
+        // Sukces - zwracamy status 201 (Created) i wiadomość
+        res.status(201).json({ message: 'Dodano rekord', success: true });
+      } else {
+        // Nie dodano żadnego wiersza, ale nie było błędu
+        res.status(200).json({ message: 'Nie dodano rekordu', success: false });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Błąd podczas pobierania danych' });
+    }
+  });
+
 app.listen(port, () => {
   console.log(`Backend uruchomiony na porcie ${port}`);
 });

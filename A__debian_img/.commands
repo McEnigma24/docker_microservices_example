@@ -1,6 +1,9 @@
 # remove all #
 docker rmi -f $(docker images -aq)
 
+# remove dangling images # <none> <none>
+docker image prune
+
 # Usuwanie obrazu #
 docker rmi
 

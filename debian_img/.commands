@@ -1,0 +1,18 @@
+# remove all #
+docker rmi -f $(docker images -aq)
+
+# Usuwanie obrazu #
+docker rmi
+
+
+
+
+
+# ls #
+docker images
+
+# build #
+docker build -t "debian_printing" .
+
+# run #
+docker run debian_printing

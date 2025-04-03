@@ -1,0 +1,5 @@
+.dockerignore
+Dockerfile
+
+.all_lines
+.commands

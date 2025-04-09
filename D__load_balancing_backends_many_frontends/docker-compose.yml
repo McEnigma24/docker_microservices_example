@@ -4,7 +4,7 @@ services:
   backend:
     build: ./backend
     deploy:
-      replicas: 3  # Możesz zwiększyć liczbę replik backendu
+      replicas: 3
     environment:
       - SERVICE_NAME=backend
     networks:
@@ -14,9 +14,9 @@ services:
   frontend:
     build: ./frontend
     deploy:
-      replicas: 5  # Możesz dostosować liczbę frontendów
+      replicas: 5
     ports:
-      - "3001-3005:3001"  # Mapowanie portów dla wielu instancji
+      - "3001-3005:3001"  # Expose ports outside 3001 to 3005 -> routes to 3001 on the container
     depends_on:
       - backend
       - nginx
